@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BasicFtPoc</string>
+    <string name="action_settings">Settings</string>
+    <string name="permission_externalStorage_rationale">Storage permission is needed to show the media preview.</string>
+    <string name="ok">OK</string>
+    <string name="permissions_not_granted">Permissions were not granted.</string>
+    <string name="permision_available_externalStorage">Storage Permissions have been granted. Storage screen can now be opened.</string>
+</resources>

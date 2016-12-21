@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="0.0dip"
+    android:paddingTop="0.0dip" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@drawable/listitem_partner_icon"
+        android:gravity="center"
+        android:paddingLeft="12.0dip"
+        android:paddingRight="8.0dip" >
+
+        <ImageView
+            android:id="@+id/filetransfer_image"
+            android:src="@drawable/ic_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2.0dip"
+            android:layout_marginTop="3.0dip" >
+        </ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filetransfer_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listitem_partner_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="0.0dip" >
+
+        <TextView
+            android:id="@+id/filetransfer_name"
+            android:text="@string/app_name"
+            android:layout_width="0.0dip"
+             style="@style/fileChooserName"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingBottom="6.0dip"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="5.0dip"
+            android:paddingTop="6.0dip"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+
+         <LinearLayout
+                android:id="@+id/filetransfer_checkbox_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <CheckBox
+                    android:id="@+id/filetransfer_checkbox"
+                    style="@style/TVCheckbox"
+                    android:checked="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:duplicateParentState="true"
+                    android:text="@null" />
+            </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
