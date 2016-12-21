@@ -27,7 +27,7 @@ import java.util.List;
 
 public class FileTransferActivity extends AppCompatActivity {
     private static final String TAG = FileTransferActivityFragment.class.getSimpleName();
-    List<FileItem> mFileItems;
+    ArrayList<FileItem> mFileItems;
 
     private FileTransferActivityFragment.OnDirectoryClickedListener mDirectoryClickedListener;
 
@@ -45,6 +45,13 @@ public class FileTransferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_file_transfer);
         mLayout = findViewById(R.id.activity_main_layout);
 
+        checkAndGetStoragePermission();
+
+        createTheFragment(savedInstanceState, mFileItems);
+
+    }
+
+    void checkAndGetStoragePermission() {
         Log.i(TAG, "Checking storage permission.");
         // BEGIN_INCLUDE(Storage_permission)
         // Check if the Storage permission is already available.
@@ -63,14 +70,18 @@ public class FileTransferActivity extends AppCompatActivity {
 
         }
         // END_INCLUDE(storage_permission)
+    }
 
-        if (savedInstanceState == null && mFileItems != null) {
+    void createTheFragment(Bundle savedInstanceState, List<FileItem> fileItems) {
+        if (savedInstanceState == null && fileItems != null) {
             android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
             FileTransferActivityFragment fragment = new FileTransferActivityFragment();
+            Bundle arguments = new Bundle();
+            arguments.putParcelableArrayList(FileTransferActivityFragment.ARG_LIST, mFileItems);
+            fragment.setArguments(arguments);
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
-
     }
 
     @Override
@@ -135,6 +146,7 @@ public class FileTransferActivity extends AppCompatActivity {
                             .show();
                     mFileItems = new ArrayList<>();
                 }
+                createTheFragment(mSavedInstanceState, mFileItems);
             }
 
             // other 'case' lines to check for other

@@ -30,6 +30,12 @@ public class FileTransferActivityFragment extends Fragment {
 
     boolean isInitialState;
 
+    /**
+     * The fragment argument representing the item ID that this fragment
+     * represents.
+     */
+    public static final String ARG_LIST = "arg_list";
+
 
 
     List<FileItem> mFileItems;
@@ -155,7 +161,9 @@ public class FileTransferActivityFragment extends Fragment {
         mRecyclerView = (RecyclerView) mLayout.findViewById(R.id.directory_list);
         assert mRecyclerView != null;
 
-        mFileItems = (new Content()).initFTList(getActivity());
+        mFileItems = getArguments().getParcelableArrayList(ARG_LIST);
+
+        //mFileItems = (new Content()).initFTList(getActivity());
         setupRecyclerView(mFileItems);
 
         return mLayout;

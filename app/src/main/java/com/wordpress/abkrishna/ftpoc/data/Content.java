@@ -26,11 +26,11 @@ public class Content {
     /**
      * An array of File items.
      */
-    public static final List<FileItem> FILE_ITEMS = new ArrayList<>();
+    public static final ArrayList<FileItem> FILE_ITEMS = new ArrayList<>();
 
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 2;
 
-    public static List<String> getSdCardPaths(final Context context) {
+    private static List<String> getSdCardPaths(final Context context) {
         boolean includePrimaryExternalStorage = false;
         final File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(context);
         if (externalCacheDirs == null || externalCacheDirs.length == 0)
@@ -77,7 +77,7 @@ public class Content {
     }
     //use this code
     //give includePrimaryExternalStorage = false; all the time
-    public List<FileItem> initFTList(Context context) {
+    public ArrayList<FileItem> initFTList(Context context) {
         if(FILE_ITEMS.size() == 0) {
             //List<FileItem> fileItems = new ArrayList<>();
             String path = Environment.getExternalStorageDirectory().toString();
