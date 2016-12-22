@@ -82,7 +82,7 @@ public class Content {
             //List<FileItem> fileItems = new ArrayList<>();
             String path = Environment.getExternalStorageDirectory().toString();
             File rootDir = new File(path);
-            addFileItem(createFileItem(rootDir));
+            addFileItem(new FileItem(rootDir.getPath(), "Internal Storage", rootDir.isDirectory()));
             //FILE_ITEMS.add(createFileItem(rootDir));
             List<String> listOfPaths = getSdCardPaths(context);
             //path = System.getenv("SECONDARY_STORAGE");
@@ -93,9 +93,23 @@ public class Content {
                     addFileItem(createFileItem(new File(st)));
                 }
             }
-            addFileItem(new FileItem("My Photos", "My Photos", true));
+            File publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+            /*addFileItem(createFileItem(publicDirectory));
+            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);*/
+            addFileItem(new FileItem(publicDirectory.getPath(), "My Music", publicDirectory.isDirectory()));
+            //addFileItem(createFileItem(publicDirectory));
+            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            addFileItem(new FileItem(publicDirectory.getPath(), "My Pictures", publicDirectory.isDirectory()));
+            //addFileItem(createFileItem(publicDirectory));
+            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+            addFileItem(new FileItem(publicDirectory.getPath(), "My Photos", publicDirectory.isDirectory()));
+            //addFileItem(createFileItem(publicDirectory));
+            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            addFileItem(new FileItem(publicDirectory.getPath(), "My Downloads", publicDirectory.isDirectory()));
+            //addFileItem(createFileItem(publicDirectory));
+            /*addFileItem(new FileItem("My Photos", "My Photos", true));
             addFileItem(new FileItem("My Videos", "My Videos", true));
-            addFileItem(new FileItem("My Music", "My Music", true));
+            addFileItem(new FileItem("My Music", "My Music", true));*/
         }
         return FILE_ITEMS;
     }

@@ -3,15 +3,19 @@ package com.wordpress.abkrishna.ftpoc.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Comparator;
+
 /**
  * A File item representing an entry of directory
  * Created by balakrishna on 05-Dec-16.
  */
 
-public class FileItem implements Parcelable {
+public class FileItem implements Parcelable, Comparator<FileItem> {
     public final String filePath;
     public final String fileName;
     public final boolean isDirectory;
+
+
 
     FileItem(String filePath, String fileName, boolean isDirectory) {
         this.filePath = filePath;
@@ -52,5 +56,13 @@ public class FileItem implements Parcelable {
         parcel.writeString(filePath);
         parcel.writeString(fileName);
         parcel.writeByte((byte) (isDirectory ? 1 : 0));
+    }
+
+    @Override
+    public int compare(FileItem fileItem1, FileItem fileItem2) {
+        String fileName1 = fileItem1.fileName;
+        String fileName2 = fileItem2.fileName;
+
+        return fileName1.compareTo(fileName2);
     }
 }

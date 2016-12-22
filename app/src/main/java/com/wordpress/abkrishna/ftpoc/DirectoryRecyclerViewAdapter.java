@@ -41,10 +41,11 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         holder.imageView.setImageResource(start);
         //holder.mIdView.setCompoundDrawablesWithIntrinsicBounds(start, 0, 0, 0);
         final String filePath = holder.mItem.filePath;
+        final FileItem fileItem = holder.mItem;
         holder.mIdView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDirectoryClickedListener.onDirectoryClicked(filePath);
+                mDirectoryClickedListener.onDirectoryClicked(fileItem);
             }
         });
     }
