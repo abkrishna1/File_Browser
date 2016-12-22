@@ -146,6 +146,6 @@ public class FileTransferActivityFragment extends Fragment {
     }
 
     void setupRecyclerView(List<FileItem> fileItemList) {
-        mRecyclerView.setAdapter(new DirectoryRecyclerViewAdapter(fileItemList, mListener));
+        mRecyclerView.setAdapter(new DirectoryRecyclerViewAdapter(fileItemList, mListener, getActivity()));
     }
 }

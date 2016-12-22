@@ -1,16 +1,24 @@
 package com.wordpress.abkrishna.ftpoc;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wordpress.abkrishna.ftpoc.data.FileItem;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,10 +30,14 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final List<FileItem> mValues;
 
     static FileTransferActivityFragment.OnDirectoryClickedListener mDirectoryClickedListener;
+    Activity mActivity;
 
-    DirectoryRecyclerViewAdapter(List<FileItem> items, FileTransferActivityFragment.OnDirectoryClickedListener directoryClickedListener) {
+    DirectoryRecyclerViewAdapter(List<FileItem> items,
+                                 FileTransferActivityFragment.OnDirectoryClickedListener directoryClickedListener,
+                                 Activity activity) {
         mValues = items;
         mDirectoryClickedListener = directoryClickedListener;
+        mActivity = activity;
     }
 
     @Override
@@ -35,13 +47,17 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(holder.mItem.fileName.equals("0")? "Internal Storage":holder.mItem.fileName);
         boolean isDirectory = mValues.get(position).isDirectory;
         int start = isDirectory ? R.drawable.ic_folder : R.drawable.ic_file;
         holder.imageView.setImageResource(start);
         final FileItem fileItem = holder.mItem;
+        final String filePath = holder.mItem.filePath;
+        File fileP = Environment.getExternalStoragePublicDirectory(filePath);
+        //final Uri uri2 = Uri.fromFile(fileP);
+        //final Uri uri = Uri.parse(holder.mItem.filePath);
         if(isDirectory) {
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,7 +75,45 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     mDirectoryClickedListener.onDirectoryClicked(fileItem);
                 }
             });
+        } else {
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.v("depth ---  ", " " + FileTransferActivityFragment.depth);
+                    String mimeType = getMimeType(filePath);
+                    final Uri uri = FileProvider.getUriForFile(mActivity, mActivity.getApplicationContext().getPackageName() + ".provider", new File(holder.mItem.filePath));
+
+                    showFile(uri, mimeType);
+                }
+            });
+            holder.mIdView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.v("depth ---  ", " " + FileTransferActivityFragment.depth);
+                    String mimeType = getMimeType(filePath);
+                    final Uri uri = FileProvider.getUriForFile(mActivity, mActivity.getApplicationContext().getPackageName() + ".provider", new File(holder.mItem.filePath));
+
+                    showFile(uri, mimeType);
+                }
+            });
         }
+    }
+    private void showFile(Uri fileUri, String mimeType){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setDataAndType(fileUri, mimeType);
+        /*if(mimeType.contains("image"))
+            mimeType = "image*//*";*/
+        mActivity.startActivity(intent);
+    }
+    public static String getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
     }
 
     @Override

@@ -1,20 +1,14 @@
 package com.wordpress.abkrishna.ftpoc.data;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.os.EnvironmentCompat;
 import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,7 +23,7 @@ public class Content {
     public static final ArrayList<FileItem> FILE_ITEMS = new ArrayList<>();
 
     private static List<String> getSdCardPaths(final Context context) {
-        boolean includePrimaryExternalStorage = false;
+        //boolean includePrimaryExternalStorage = false;
         final File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(context);
         if (externalCacheDirs == null || externalCacheDirs.length == 0)
             return null;
@@ -39,12 +33,12 @@ public class Content {
             final String storageState = EnvironmentCompat.getStorageState(externalCacheDirs[0]);
             if (!Environment.MEDIA_MOUNTED.equals(storageState))
                 return null;
-            if (!includePrimaryExternalStorage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Environment.isExternalStorageEmulated())
+            if (/*!includePrimaryExternalStorage &&*/ Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Environment.isExternalStorageEmulated())
                 return null;
         }
         final List<String> result = new ArrayList<>();
-        if (includePrimaryExternalStorage || externalCacheDirs.length == 1)
-            result.add(getRootOfInnerSdCardFolder(externalCacheDirs[0]));
+        /*if (includePrimaryExternalStorage || externalCacheDirs.length == 1)
+            result.add(getRootOfInnerSdCardFolder(externalCacheDirs[0]));*/
         for (int i = 1; i < externalCacheDirs.length; ++i) {
             final File file = externalCacheDirs[i];
             if (file == null)
@@ -81,8 +75,7 @@ public class Content {
             addFileItem(createFileITem(rootDir, "Internal Storage"));
             List<String> listOfPaths = getSdCardPaths(context);
             if (listOfPaths != null) {
-                for (String st :
-                        listOfPaths) {
+                for (String st : listOfPaths) {
                     addFileItem(createFileItem(new File(st)));
                 }
             }
