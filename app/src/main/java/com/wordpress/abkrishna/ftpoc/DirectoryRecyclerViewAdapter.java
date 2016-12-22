@@ -1,6 +1,7 @@
 package com.wordpress.abkrishna.ftpoc;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,17 +38,28 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(holder.mItem.fileName.equals("0")? "Internal Storage":holder.mItem.fileName);
-        int start = (mValues.get(position).isDirectory) ? R.drawable.ic_folder : R.drawable.ic_file;
+        boolean isDirectory = mValues.get(position).isDirectory;
+        int start = isDirectory ? R.drawable.ic_folder : R.drawable.ic_file;
         holder.imageView.setImageResource(start);
-        //holder.mIdView.setCompoundDrawablesWithIntrinsicBounds(start, 0, 0, 0);
-        final String filePath = holder.mItem.filePath;
         final FileItem fileItem = holder.mItem;
-        holder.mIdView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDirectoryClickedListener.onDirectoryClicked(fileItem);
-            }
-        });
+        if(isDirectory) {
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FileTransferActivityFragment.depth++;
+                    Log.v("depth ---  ", " " + FileTransferActivityFragment.depth);
+                    mDirectoryClickedListener.onDirectoryClicked(fileItem);
+                }
+            });
+            holder.mIdView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FileTransferActivityFragment.depth++;
+                    Log.v("depth ---  ", " " + FileTransferActivityFragment.depth);
+                    mDirectoryClickedListener.onDirectoryClicked(fileItem);
+                }
+            });
+        }
     }
 
     @Override
@@ -57,7 +69,6 @@ class DirectoryRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 }
 
 class ViewHolder extends RecyclerView.ViewHolder {
-    //private final View mView;
     final ImageView imageView;
     final TextView mIdView;
     final CheckBox isSelected;

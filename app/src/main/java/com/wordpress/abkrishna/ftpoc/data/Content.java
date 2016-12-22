@@ -28,8 +28,6 @@ public class Content {
      */
     public static final ArrayList<FileItem> FILE_ITEMS = new ArrayList<>();
 
-    private static final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 2;
-
     private static List<String> getSdCardPaths(final Context context) {
         boolean includePrimaryExternalStorage = false;
         final File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(context);
@@ -75,71 +73,30 @@ public class Content {
             file = parentFile;
         }
     }
-    //use this code
-    //give includePrimaryExternalStorage = false; all the time
+
     public ArrayList<FileItem> initFTList(Context context) {
         if(FILE_ITEMS.size() == 0) {
-            //List<FileItem> fileItems = new ArrayList<>();
             String path = Environment.getExternalStorageDirectory().toString();
             File rootDir = new File(path);
-            addFileItem(new FileItem(rootDir.getPath(), "Internal Storage", rootDir.isDirectory()));
-            //FILE_ITEMS.add(createFileItem(rootDir));
+            addFileItem(createFileITem(rootDir, "Internal Storage"));
             List<String> listOfPaths = getSdCardPaths(context);
-            //path = System.getenv("SECONDARY_STORAGE");
             if (listOfPaths != null) {
-                //boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
                 for (String st :
                         listOfPaths) {
                     addFileItem(createFileItem(new File(st)));
                 }
             }
             File publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-            /*addFileItem(createFileItem(publicDirectory));
-            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);*/
-            addFileItem(new FileItem(publicDirectory.getPath(), "My Music", publicDirectory.isDirectory()));
-            //addFileItem(createFileItem(publicDirectory));
+            addFileItem(createFileITem(publicDirectory, "My Music"));
             publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            addFileItem(new FileItem(publicDirectory.getPath(), "My Pictures", publicDirectory.isDirectory()));
-            //addFileItem(createFileItem(publicDirectory));
+            addFileItem(createFileITem(publicDirectory, "My Pictures"));
             publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-            addFileItem(new FileItem(publicDirectory.getPath(), "My Photos", publicDirectory.isDirectory()));
-            //addFileItem(createFileItem(publicDirectory));
+            addFileItem(createFileITem(publicDirectory, "My Photos"));
             publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            addFileItem(new FileItem(publicDirectory.getPath(), "My Downloads", publicDirectory.isDirectory()));
-            //addFileItem(createFileItem(publicDirectory));
-            /*addFileItem(new FileItem("My Photos", "My Photos", true));
-            addFileItem(new FileItem("My Videos", "My Videos", true));
-            addFileItem(new FileItem("My Music", "My Music", true));*/
+            addFileItem(createFileITem(publicDirectory, "My Downloads"));
         }
         return FILE_ITEMS;
     }
-    /*static {
-        String path = Environment.getExternalStorageDirectory().toString();
-        Log.v("External ----  ", path);
-        File rootDir = new File(path);
-        //FILE_ITEMS.add(createFileItem(rootDir));
-        //File[] files = rootDir.listFiles();
-        List<File> filesList = new ArrayList<>();
-        filesList.add(rootDir);
-        //filesList.addAll(Arrays.asList(files));
-        *//*if(files != null && files.length > 0)
-        {
-            for (File file : files) {
-                filesList.add(file);
-            }
-        }*//*
-
-        //files = rootDir.
-        String secondaryPath = System.getenv("SECONDARY_STORAGE");
-        if(secondaryPath != null) {
-            //secondaryPath = System.getenv("SECONDARY_STORAGE");
-            //files[files.length] = new File(secondaryPath);
-            filesList.add(new File(secondaryPath));
-        }
-        for (File file : filesList) {
-            addFileItem(createFileItem(file));
-        }
-    }*/
 
     private static void addFileItem(FileItem fileItem) {
         FILE_ITEMS.add(fileItem);
@@ -148,6 +105,12 @@ public class Content {
     public static FileItem createFileItem(File file) {
         String filePath = file.getPath();
         String fileName = file.getName();
+        boolean isDirectory = file.isDirectory();
+        return new FileItem(filePath, fileName, isDirectory);
+    }
+
+    public static FileItem createFileITem(File file, String fileName){
+        String filePath = file.getPath();
         boolean isDirectory = file.isDirectory();
         return new FileItem(filePath, fileName, isDirectory);
     }
